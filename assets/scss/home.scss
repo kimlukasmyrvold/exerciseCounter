@@ -1,0 +1,18 @@
+.add_exercise {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+
+    div {
+        display: flex;
+        gap: .5em;
+    }
+}
+
+.exercise_table {
+    input {
+        background-color: transparent;
+        width: 100%;
+        border: 1px solid;
+    }
+}

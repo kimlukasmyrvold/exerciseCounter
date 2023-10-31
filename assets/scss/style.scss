@@ -1,0 +1,126 @@
+@use "abstracts/index" as *;
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+    color: var(--clr-text);
+    font-family: $font-family;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: $nav-height;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-size: $fs-200;
+    min-height: 100vh;
+    background-color: var(--clr-background);
+    margin: 0;
+}
+
+header {
+    display: flex;
+    height: $nav-height;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1em;
+    box-shadow: 0 0 5px $clr-seperator;
+
+    ul {
+        display: flex;
+        gap: 1em;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: $fs-300;
+    }
+
+    .navbar_buttons {
+        display: flex;
+        gap: 1em;
+
+        button {
+            border: 1px solid;
+        }
+    }
+}
+
+main {
+    flex: 1;
+    padding: 0 1em;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    padding: 0 1em;
+    box-shadow: 0 0 5px $clr-seperator;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+    font-size: $fs-200;
+    width: fit-content;
+    cursor: pointer;
+    transition: translate .2s ease;
+    
+    &:hover {
+        translate: 0 -2px;
+    }
+}
+
+.button {
+    background-color: var(--clr-primary);
+    border: none;
+    padding: .5em 1em;
+    cursor: pointer;
+}
+
+input {
+    background-color: var(--clr-primary);
+    border: none;
+    padding: .2em .5em;
+    border-radius: 10px;
+    font-size: $fs-200;
+}
+
+table {
+    border: 1px solid $clr-seperator;
+    border-collapse: collapse;
+    width: 100%;
+    margin: .5em 0;
+    box-shadow: 0 0 8px #000;
+
+    th,
+    td {
+        text-align: left;
+        padding: 8px;
+        font-size: $fs-200;
+        text-transform: capitalize;
+        border: none;
+    }
+
+    th {
+        font-size: $fs-300;
+        background-color: var(--clr-secondary);
+    }
+
+    tr:nth-child(odd) {
+        background-color: var(--clr-secondary);
+    }
+
+    th + th,
+    td + td {
+        border-left: 1px solid $clr-seperator;
+    }
+
+    tr + tr td {
+        border-top: 1px solid $clr-seperator;
+    }
+}

@@ -1,0 +1,26 @@
+$themes: (
+    light: (text: #080f16,
+        background: #e9f1f7,
+        primary: #8abff5,
+        secondary: #dde9f3,
+        accent: #663c9a,
+    ),
+    dark: (text: #e9f0f7,
+        background: #081016,
+        primary: #0a4075,
+        secondary: #0c1822,
+        accent: #8f65c3,
+    ),
+);
+
+:root {
+    @each $name, $values in $themes {
+        &[data-theme="#{$name}"] {
+            @each $a, $b in $values {
+                --clr-#{$a}: #{$b};
+            }
+        }
+    }
+}
+
+$clr-seperator: #808080b3;
