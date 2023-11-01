@@ -1,3 +1,5 @@
+@use "abstracts/index" as *;
+
 .add_exercise {
     display: flex;
     flex-direction: column;
@@ -14,5 +16,9 @@
         background-color: transparent;
         width: 100%;
         border: 1px solid;
+    }
+
+    .remove_exercise_button {
+        background-color: $clr-destructive;
     }
 }
