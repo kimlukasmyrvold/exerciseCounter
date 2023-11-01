@@ -3,6 +3,7 @@ addExerciseBtn.addEventListener("click", () => addExercise());
 
 function addExercise(exerciseValue = document.querySelector("#exercise").value, goalValue = document.querySelector("#goal").value, amountValue = 0) {
     if (checkIfExerciseIsAdded(exerciseValue)) return;
+    if (checkInputs(exerciseValue, goalValue)) return;
     addExerciseToLocalStorage(exerciseValue, goalValue, amountValue);
     clearInputValues();
 
@@ -20,6 +21,19 @@ function addExercise(exerciseValue = document.querySelector("#exercise").value, 
     input.type = "number";
     input.placeholder = amountValue;
     amount.append(input);
+
+    const removeAction = row.insertCell(3);
+    const button = document.createElement("button");
+    button.classList.add("button");
+    button.classList.add("remove_exercise_button");
+    button.onclick = removeExercise;
+    button.textContent = "Remove";
+    removeAction.append(button);
+}
+
+function removeExercise() {
+    var index = this.parentNode.parentNode.rowIndex;
+    document.querySelector(".exercise_table").deleteRow(index);
 }
 
 function clearInputValues() {
@@ -35,6 +49,13 @@ function checkIfExerciseIsAdded(exercise) {
             console.error(`Error: "${exercise}" is already added!`);
             return true;
         };
+    }
+}
+
+function checkInputs(exercise, goal) {
+    if (exercise === "" || goal === "") {
+        console.error(`Error: Values are empty!`);
+        return true;
     }
 }
 
