@@ -80,3 +80,10 @@ function getExerciseFromLocalStorage() {
 }
 
 getExerciseFromLocalStorage()
+
+
+// Check for keyboard input and add exercise if enter button is pressed
+document.addEventListener("keydown", (e) => { 
+    if (e.key !== "Enter") return;
+    addExercise();
+})
