@@ -37,6 +37,14 @@ header {
         padding: 0;
         list-style: none;
         font-size: $fs-300;
+
+        a {
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 
     .navbar_buttons {
@@ -52,6 +60,7 @@ header {
 main {
     flex: 1;
     padding: 0 1em;
+    margin-block: 1em;
 }
 
 footer {
@@ -68,8 +77,8 @@ button {
     font-size: $fs-200;
     width: fit-content;
     cursor: pointer;
-    transition: translate .2s ease;
-    
+    transition: translate ease .2s;
+
     &:hover {
         translate: 0 -2px;
     }
@@ -108,19 +117,24 @@ table {
 
     th {
         font-size: $fs-300;
-        background-color: var(--clr-secondary);
+        background-color: #80808007;
     }
 
     tr:nth-child(odd) {
-        background-color: var(--clr-secondary);
+        background-color: #80808007;
     }
 
-    th + th,
-    td + td {
+    th+th,
+    td+td {
         border-left: 1px solid $clr-seperator;
     }
 
-    tr + tr td {
+    tr+tr td {
         border-top: 1px solid $clr-seperator;
     }
+}
+
+h1 {
+    font-size: $fs-600;
+    margin: 0;
 }
