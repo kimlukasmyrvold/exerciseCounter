@@ -1,27 +1,48 @@
-const addExerciseBtn = document.querySelector(".add_exercise_button");
-addExerciseBtn.addEventListener("click", () => addExercise());
+function triggerConfetti(x, y) {
+    const confettiSettings = {
+        particleCount: 100,
+        spread: 100,
+        origin: { x: x / window.innerWidth, y: y / window.innerHeight },
+    };
+
+    confetti.create(null, { resize: true })(confettiSettings);
+}
 
 function addExercise(exerciseValue = document.querySelector("#exercise").value, goalValue = document.querySelector("#goal").value, amountValue = 0) {
-    if (checkIfExerciseIsAdded(exerciseValue)) return;
-    if (checkInputs(exerciseValue, goalValue)) return;
+    // if (checkIfExerciseIsAdded(exerciseValue)) return;
+    // if (checkInputs(exerciseValue, goalValue)) return;
+    if (checkForProblems(exerciseValue, goalValue)) return;
     addExerciseToLocalStorage(exerciseValue, goalValue, amountValue);
-    clearInputValues();
 
+    // Clear inputs
+    document.querySelector("#exercise").value = "";
+    document.querySelector("#goal").value = "";
+
+    // Add new row to end of table
     const table = document.querySelector(".exercise_table");
     const row = table.insertRow(-1);
 
+    // Add exercise cell to row
     const exercise = row.insertCell(0);
+    exercise.dataset.exercise = exerciseValue.toLowerCase();
     exercise.textContent = exerciseValue;
 
+    // Add goal cell to row
     const goal = row.insertCell(1);
     goal.textContent = goalValue;
 
+    // Add amount cell to row
     const amount = row.insertCell(2);
     const input = document.createElement("input");
     input.type = "number";
-    input.placeholder = amountValue;
+    input.value = amountValue;
+    input.max = goalValue;
+    input.min = 0;
+    input.classList.add("amount");
+    input.addEventListener("input", () => amountChanged(input));
     amount.append(input);
 
+    // Add actions cell to row
     const removeAction = row.insertCell(3);
     const button = document.createElement("button");
     button.classList.add("button");
@@ -31,59 +52,103 @@ function addExercise(exerciseValue = document.querySelector("#exercise").value, 
     removeAction.append(button);
 }
 
-function removeExercise() {
-    var index = this.parentNode.parentNode.rowIndex;
-    document.querySelector(".exercise_table").deleteRow(index);
+function amountChanged(inputElement) {
+    const inputValue = parseFloat(inputElement.value);
+    const max = parseFloat(inputElement.max);
+
+    if (inputValue >= max) {
+        const rect = inputElement.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        triggerConfetti(x, y);
+    }
+
+    updateExerciseFromLocalStorage(inputValue, inputElement);
 }
 
-function clearInputValues() {
-    document.querySelector("#exercise").value = "";
-    document.querySelector("#goal").value = "";
-}
+function checkForProblems(exercise, goal) {
+    let isBad = false;
 
-function checkIfExerciseIsAdded(exercise) {
     const rows = document.querySelectorAll(".exercise_table tr");
     for (let i = 1; i < rows.length; i++) {
         const td = rows[i].querySelector("td").textContent;
         if (td === exercise) {
             console.error(`Error: "${exercise}" is already added!`);
-            return true;
+            isBad = true;
         };
     }
-}
 
-function checkInputs(exercise, goal) {
     if (exercise === "" || goal === "") {
         console.error(`Error: Values are empty!`);
-        return true;
+        isBad = true;
     }
+
+    if (!isNaN(exercise)) {
+        console.error(`Exercise input cannot contain numbers!`);
+        isBad = true;
+    }
+
+    // if (isNaN(goal.value)) {
+    //     console.error(`Goal input can only contain numbers!`);
+    //     isBad = true;
+    // }
+
+    return isBad;
+}
+
+function removeExercise() {
+    const parentNode = this.parentNode.parentNode;
+    const index = parentNode.rowIndex;
+    const exercise = parentNode.querySelector("[data-exercise]").dataset.exercise;
+
+    document.querySelector(".exercise_table").deleteRow(index);
+    removeExerciseFromLocalStorage(exercise);
+}
+
+function removeExerciseFromLocalStorage(exercise) {
+    let exercises = JSON.parse(localStorage.getItem("exercises"));
+    delete exercises[exercise];
+
+    localStorage.setItem("exercises", JSON.stringify(exercises));
+}
+
+function updateExerciseFromLocalStorage(amount, inputElement) {
+    const exercise = inputElement.parentNode.parentNode.querySelector("[data-exercise]").dataset.exercise;
+
+    const exercises = JSON.parse(localStorage.getItem("exercises"));
+    exercises[exercise].amount = amount;
+
+    localStorage.setItem("exercises", JSON.stringify(exercises));
 }
 
 function addExerciseToLocalStorage(exercise, goal, amount = 0) {
-    const exerciseMap = {
+    const exerciseValues = {
         goal: goal,
         amount: amount,
     };
 
-    const map = {
-        [exercise]: exerciseMap,
-        squats: exerciseMap,
-        sitting: exerciseMap,
-    };
-
-    localStorage.setItem("exercises", JSON.stringify(map))
-}
-
-function getExerciseFromLocalStorage() {
     const exercises = JSON.parse(localStorage.getItem("exercises"));
-    console.table(exercises);
+    const newExercises = { ...exercises, [exercise.toLowerCase()]: exerciseValues };
+
+    localStorage.setItem("exercises", JSON.stringify(newExercises));
 }
 
-getExerciseFromLocalStorage()
+function addAllExercisesOnLoad() {
+    const exercises = JSON.parse(localStorage.getItem("exercises"));
 
+    for (const key in exercises) {
+        const obj = exercises[key];
+        addExercise(key, obj.goal, obj.amount);
+    }
+}
+
+addAllExercisesOnLoad();
+
+// Check if add exercise button is clicked and call addExercise function
+document.querySelector(".add_exercise_button").addEventListener("click", () => addExercise());
 
 // Check for keyboard input and add exercise if enter button is pressed
-document.addEventListener("keydown", (e) => { 
+document.querySelector(".add_exercise").addEventListener("keydown", (e) => {
     if (e.key !== "Enter") return;
     addExercise();
-})
+});
