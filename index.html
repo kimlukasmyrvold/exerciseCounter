@@ -7,6 +7,9 @@
     <title>Home</title>
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="./assets/css/home.css">
+
+    <script src="./assets/javascript/dist/confetti.browser.min.js"></script>
+    
     <script src="./assets/javascript/main.js" defer></script>
     <script src="./assets/javascript/home.js" defer></script>
 </head>
@@ -15,7 +18,7 @@
     <header>
         <nav>
             <ul>
-                <li><a href="./">Home</a></li>
+                <li><a href="./">Exercise Counter</a></li>
             </ul>
         </nav>
 
@@ -31,7 +34,7 @@
         <section style="margin-top: 2em;">
             <div class="add_exercise">
                 <input id="exercise" type="text" placeholder="Exercise...">
-                <input id="goal" type="number" placeholder="Goal...">
+                <input id="goal" type="number" placeholder="Goal..." min="0">
 
                 <button class="button add_exercise_button">Add Exercise</button>
             </div>
