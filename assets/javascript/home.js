@@ -9,8 +9,6 @@ function triggerConfetti(x, y) {
 }
 
 function addExercise(exerciseValue = document.querySelector("#exercise").value, goalValue = document.querySelector("#goal").value, amountValue = 0) {
-    // if (checkIfExerciseIsAdded(exerciseValue)) return;
-    // if (checkInputs(exerciseValue, goalValue)) return;
     if (checkForProblems(exerciseValue, goalValue)) return;
     addExerciseToLocalStorage(exerciseValue, goalValue, amountValue);
 
