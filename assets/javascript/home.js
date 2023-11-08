@@ -22,15 +22,18 @@ function addExercise(exerciseValue = document.querySelector("#exercise").value, 
 
     // Add exercise cell to row
     const exercise = row.insertCell(0);
+    exercise.dataset.cell = "exercise";
     exercise.dataset.exercise = exerciseValue.toLowerCase();
     exercise.textContent = exerciseValue;
 
     // Add goal cell to row
     const goal = row.insertCell(1);
+    goal.dataset.cell = "goal";
     goal.textContent = goalValue;
 
     // Add amount cell to row
     const amount = row.insertCell(2);
+    amount.dataset.cell = "amount";
     const input = document.createElement("input");
     input.type = "number";
     input.value = amountValue;
@@ -42,9 +45,11 @@ function addExercise(exerciseValue = document.querySelector("#exercise").value, 
 
     // Add actions cell to row
     const removeAction = row.insertCell(3);
+    removeAction.dataset.cell = "actions";
     const button = document.createElement("button");
     button.classList.add("button");
     button.classList.add("remove_exercise_button");
+    button.classList.add("destructive");
     button.onclick = removeExercise;
     button.textContent = "Remove";
     removeAction.append(button);
@@ -150,3 +155,44 @@ document.querySelector(".add_exercise").addEventListener("keydown", (e) => {
     if (e.key !== "Enter") return;
     addExercise();
 });
+
+
+// function checkOverflow() {
+//     const exercisesList = document.querySelector('.list_exercises');
+//     const check = exercisesList.scrollWidth > exercisesList.clientWidth || exercisesList.scrollHeight > exercisesList.clientHeight;
+//     exercisesList.classList[check ? "add" : "remove"]("overflowing");
+// }
+
+// // Check for overflow on script startup
+// checkOverflow();
+
+// // Add an event listener to check for overflow when the viewport is resized
+// window.addEventListener('resize', checkOverflow);
+
+(function () {
+    let resizeTimeout;
+    let isCheckingOverflow = false;
+
+    function checkOverflow() {
+        const exercisesList = document.querySelector('.table_container');
+
+        if (!isCheckingOverflow) {
+            isCheckingOverflow = true;
+
+            setTimeout(function () {
+                const check = exercisesList.scrollWidth > exercisesList.clientWidth || exercisesList.scrollHeight > exercisesList.clientHeight;
+                exercisesList.classList[check ? 'add' : 'remove']('overflowing');
+                isCheckingOverflow = false;
+            }, 50);
+        }
+    }
+
+    function debounceResize() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(checkOverflow, 50);
+    }
+
+    checkOverflow();
+
+    window.addEventListener('resize', debounceResize);
+})();

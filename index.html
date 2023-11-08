@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./assets/css/home.css">
 
     <script src="./assets/javascript/dist/confetti.browser.min.js"></script>
-    
+
     <script src="./assets/javascript/main.js" defer></script>
     <script src="./assets/javascript/home.js" defer></script>
 </head>
@@ -31,7 +31,7 @@
         <h1>Exercise Counter</h1>
         <p>Count how many exercises of certain types you have done and set goals.</p>
 
-        <section style="margin-top: 2em;">
+        <section>
             <div class="add_exercise">
                 <input id="exercise" type="text" placeholder="Exercise...">
                 <input id="goal" type="number" placeholder="Goal..." min="0">
@@ -39,16 +39,18 @@
                 <button class="button add_exercise_button">Add Exercise</button>
             </div>
 
-            <div class="list_exercises">
+            <div class="table_container">
                 <table class="exercise_table">
+                    <caption>Exercises</caption>
                     <tr>
-                        <th>Exercise:</th>
-                        <th>Goal:</th>
-                        <th>Amount:</th>
-                        <th>Actions:</th>
+                        <th data-cell="exercise">Exercise:</th>
+                        <th data-cell="goal">Goal:</th>
+                        <th data-cell="amount">Amount:</th>
+                        <th data-cell="actions">Actions:</th>
                     </tr>
                 </table>
             </div>
+
         </section>
     </main>
     <footer>
