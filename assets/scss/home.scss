@@ -116,4 +116,15 @@
     input {
         width: 100%;
     }
+
+    th:last-child {
+        width: 0;
+    }
+
+    td:last-child {
+        display: flex;
+        gap: .5rem;
+        width: min-content;
+        white-space: nowrap;
+    }
 }
