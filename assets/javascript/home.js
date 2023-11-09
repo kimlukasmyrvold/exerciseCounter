@@ -9,8 +9,8 @@ function triggerConfetti(x, y) {
 }
 
 function addExercise(exerciseValue = document.querySelector("#exercise").value, goalValue = document.querySelector("#goal").value, amountValue = 0) {
-    if (checkForProblems(exerciseValue, goalValue)) return;
-    addExerciseToLocalStorage(exerciseValue, goalValue, amountValue);
+    if (checkForProblems(exerciseValue.toLowerCase(), goalValue)) return;
+    addExerciseToLocalStorage(exerciseValue.toLowerCase(), goalValue, amountValue);
 
     // Clear inputs
     document.querySelector("#exercise").value = "";
@@ -24,7 +24,7 @@ function addExercise(exerciseValue = document.querySelector("#exercise").value, 
     const exercise = row.insertCell(0);
     exercise.dataset.cell = "exercise";
     exercise.dataset.exercise = exerciseValue.toLowerCase();
-    exercise.textContent = exerciseValue;
+    exercise.textContent = exerciseValue.toLowerCase();
 
     // Add goal cell to row
     const goal = row.insertCell(1);
@@ -37,22 +37,42 @@ function addExercise(exerciseValue = document.querySelector("#exercise").value, 
     const input = document.createElement("input");
     input.type = "number";
     input.value = amountValue;
-    input.max = goalValue;
     input.min = 0;
     input.classList.add("amount");
     input.addEventListener("input", () => amountChanged(input));
     amount.append(input);
 
     // Add actions cell to row
-    const removeAction = row.insertCell(3);
-    removeAction.dataset.cell = "actions";
-    const button = document.createElement("button");
-    button.classList.add("button");
-    button.classList.add("remove_exercise_button");
-    button.classList.add("destructive");
-    button.onclick = removeExercise;
-    button.textContent = "Remove";
-    removeAction.append(button);
+    const actions = row.insertCell(3);
+    actions.dataset.cell = "actions";
+
+    // Remove button
+    const removeBtn = document.createElement("button");
+    removeBtn.classList.add("button");
+    removeBtn.classList.add("remove_exercise_button");
+    removeBtn.classList.add("destructive");
+    removeBtn.onclick = removeExercise;
+    removeBtn.textContent = "Remove";
+
+    // Increase value by 5
+    const increaseBtnBy5 = document.createElement("button");
+    increaseBtnBy5.classList.add("button");
+    increaseBtnBy5.classList.add("increaseValue_exercise_button");
+    increaseBtnBy5.dataset.step = 5;
+    increaseBtnBy5.onclick = addValue;
+    increaseBtnBy5.textContent = "Add 5";
+
+    // Increase value by 10
+    const increaseBtnBy10 = document.createElement("button");
+    increaseBtnBy10.classList.add("button");
+    increaseBtnBy10.classList.add("increaseValue_exercise_button");
+    increaseBtnBy10.dataset.step = 10;
+    increaseBtnBy10.onclick = addValue;
+    increaseBtnBy10.textContent = "Add 10";
+
+    actions.append(increaseBtnBy5);
+    actions.append(increaseBtnBy10);
+    actions.append(removeBtn);
 }
 
 function amountChanged(inputElement) {
@@ -74,7 +94,7 @@ function checkForProblems(exercise, goal) {
 
     const rows = document.querySelectorAll(".exercise_table tr");
     for (let i = 1; i < rows.length; i++) {
-        const td = rows[i].querySelector("td").textContent;
+        const td = rows[i].querySelector("td").dataset.exercise;
         if (td === exercise) {
             console.error(`Error: "${exercise}" is already added!`);
             isBad = true;
@@ -97,6 +117,15 @@ function checkForProblems(exercise, goal) {
     // }
 
     return isBad;
+}
+
+function addValue() {
+    const target = this.parentNode.parentNode.querySelector(".amount");
+    const step = this.dataset.step - 0;
+    let value = target.value - 0;
+    value += step;
+    target.value = value;
+    amountChanged(target);
 }
 
 function removeExercise() {
