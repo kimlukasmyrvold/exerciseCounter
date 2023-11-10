@@ -167,7 +167,23 @@ function addExerciseToLocalStorage(exercise, goal, amount = 0) {
 }
 
 function addAllExercisesOnLoad() {
-    const exercises = JSON.parse(localStorage.getItem("exercises"));
+    const defaultExercises = {
+        "push-ups": {
+            goal: 500,
+            amount: 0
+        },
+        "sit-ups": {
+            goal: 100,
+            amount: 0
+        },
+        "pull-ups": {
+            goal: 50,
+            amount: 0
+        },
+    };
+
+    let exercises = JSON.parse(localStorage.getItem("exercises"));
+    if (exercises === null || Object.entries(exercises).length === 0) exercises = defaultExercises;
 
     for (const key in exercises) {
         const obj = exercises[key];
