@@ -1,4 +1,7 @@
 function triggerConfetti(x, y) {
+    if (window.confettiActive) return;
+    window.confettiActive = true;
+    
     const confettiSettings = {
         particleCount: 100,
         spread: 100,
@@ -6,6 +9,10 @@ function triggerConfetti(x, y) {
     };
 
     confetti.create(null, { resize: true })(confettiSettings);
+
+    setTimeout(() => {
+        window.confettiActive = false;
+    }, 1500);
 }
 
 function addExercise(exerciseValue = document.querySelector("#exercise").value, goalValue = document.querySelector("#goal").value, amountValue = 0) {
