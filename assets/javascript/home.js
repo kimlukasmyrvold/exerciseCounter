@@ -83,7 +83,7 @@ function addExercise(exerciseValue = document.querySelector("#exercise").value, 
 
 function amountChanged(inputElement) {
     const inputValue = parseFloat(inputElement.value);
-    const max = parseFloat(inputElement.max);
+    const max = parseFloat(inputElement.parentNode.parentNode.querySelector("[data-cell='goal']").textContent);
 
     if (inputValue >= max) {
         const rect = inputElement.getBoundingClientRect();
@@ -121,7 +121,7 @@ function checkForProblems(exercise, goal) {
 }
 
 function addValue() {
-    const target = this.parentNode.parentNode.querySelector(".amount");
+    const target = this.parentNode.parentNode.parentNode.querySelector(".amount");
     const step = this.dataset.step - 0;
     let value = target.value - 0;
     value += step;
