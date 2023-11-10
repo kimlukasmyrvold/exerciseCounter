@@ -46,6 +46,10 @@ function addExercise(exerciseValue = document.querySelector("#exercise").value, 
     const actions = row.insertCell(3);
     actions.dataset.cell = "actions";
 
+    // Actions container
+    const actionsContainer = document.createElement("div");
+    actionsContainer.classList.add("actions_container");
+
     // Remove button
     const removeBtn = document.createElement("button");
     removeBtn.classList.add("button");
@@ -70,9 +74,11 @@ function addExercise(exerciseValue = document.querySelector("#exercise").value, 
     increaseBtnBy10.onclick = addValue;
     increaseBtnBy10.textContent = "Add 10";
 
-    actions.append(increaseBtnBy5);
-    actions.append(increaseBtnBy10);
-    actions.append(removeBtn);
+    // Append actions to DOM
+    actionsContainer.append(increaseBtnBy5);
+    actionsContainer.append(increaseBtnBy10);
+    actionsContainer.append(removeBtn);
+    actions.append(actionsContainer);
 }
 
 function amountChanged(inputElement) {
@@ -110,11 +116,6 @@ function checkForProblems(exercise, goal) {
         console.error(`Exercise input cannot contain numbers!`);
         isBad = true;
     }
-
-    // if (isNaN(goal.value)) {
-    //     console.error(`Goal input can only contain numbers!`);
-    //     isBad = true;
-    // }
 
     return isBad;
 }
@@ -184,19 +185,6 @@ document.querySelector(".add_exercise").addEventListener("keydown", (e) => {
     if (e.key !== "Enter") return;
     addExercise();
 });
-
-
-// function checkOverflow() {
-//     const exercisesList = document.querySelector('.list_exercises');
-//     const check = exercisesList.scrollWidth > exercisesList.clientWidth || exercisesList.scrollHeight > exercisesList.clientHeight;
-//     exercisesList.classList[check ? "add" : "remove"]("overflowing");
-// }
-
-// // Check for overflow on script startup
-// checkOverflow();
-
-// // Add an event listener to check for overflow when the viewport is resized
-// window.addEventListener('resize', checkOverflow);
 
 (function () {
     let resizeTimeout;
