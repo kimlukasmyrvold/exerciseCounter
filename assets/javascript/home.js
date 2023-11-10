@@ -130,7 +130,7 @@ function addValue() {
 }
 
 function removeExercise() {
-    const parentNode = this.parentNode.parentNode;
+    const parentNode = this.parentNode.parentNode.parentNode;
     const index = parentNode.rowIndex;
     const exercise = parentNode.querySelector("[data-exercise]").dataset.exercise;
 
